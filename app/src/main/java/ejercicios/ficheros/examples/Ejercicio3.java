@@ -15,7 +15,7 @@ public class Ejercicio3 implements EjerciciosInterface {
 
     @Override
     public String getNameExample() {
-        return "Conteo de caracteres en archivo";
+        return "3. Conteo de caracteres en archivo";
     }
 
     @Override

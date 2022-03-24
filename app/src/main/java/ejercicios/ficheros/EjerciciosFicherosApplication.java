@@ -13,6 +13,7 @@ public class EjerciciosFicherosApplication {
 
     private static final String EXCERCISE_CLASS_STRING = "ejercicios.ficheros.examples.Ejercicio";
 
+    // https://stackoverflow.com/questions/19766566/java-multiple-scanners
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         
