@@ -4,16 +4,75 @@
 package ejercicios.ficheros;
 
 import ejercicios.ficheros.utils.EjerciciosInterface;
-import ejercicios.ficheros.examples.Ejercicio1;
-import ejercicios.ficheros.examples.Ejercicio2;
-import ejercicios.ficheros.examples.Ejercicio3;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class EjerciciosFicherosApplication {
 
+    private static final String EXCERCISE_CLASS_STRING = "ejercicios.ficheros.examples.Ejercicio";
+
+    static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
-        initExcersise(new Ejercicio1());
-        initExcersise(new Ejercicio2());
-        initExcersise(new Ejercicio3());
+        
+        int excerciseNumber = 0;
+        System.out.println("Delimiter pattern: " + scanner.delimiter());
+
+        while(true) {
+            System.out.print("Ingrese el numero del ejercicio: ");
+
+            if(scanner.hasNextInt()) {
+                excerciseNumber = Integer.parseInt(scanner.next("\\d+"));
+                scanner.nextLine();
+            }else {
+                System.out.println("Ingrese un valor numerico");
+                scanner.nextLine();
+                continue;
+            }
+
+            EjerciciosInterface exerciseClass = findClass(EXCERCISE_CLASS_STRING + excerciseNumber);
+            if(exerciseClass == null) {
+                System.out.println("Favor de ingresar un ejercicio valido.");
+                continue;
+            }else {
+                initExcersise(exerciseClass);
+                String repeat = "";
+                while(true) {
+                    try {
+                        System.out.print("Desea ejecutar otro ejercicio? (S/N): ");
+                        repeat = scanner.next(Pattern.compile("S|s|N|n"));
+                        scanner.nextLine();
+                        break;
+                    } catch(InputMismatchException e) {
+                        scanner.nextLine();
+                        System.err.println("\nValor introducido incorrecto, introducir: S/s/N/n");
+                        continue;
+                    }
+                }
+                if(repeat.equals("s") || repeat.equals("S")) {
+                    continue;
+                }
+                break;
+            }
+        }
+
+        scanner.close();
+    }
+
+    public static EjerciciosInterface findClass(String className) {
+        try {
+            Class<?> exerciseClass = Class.forName(className);
+            EjerciciosInterface excercise = (EjerciciosInterface) exerciseClass.newInstance();
+            return excercise;
+        } catch (ClassNotFoundException e) {
+            System.err.println("No se encontro la clase: " + className);
+        } catch(InstantiationException e) {
+            System.err.println("Error de instanciación: " + e.getMessage());
+        } catch(IllegalAccessException e) {
+            System.err.println("Acceso ilegal: " + e.getMessage());
+        }
+        return null;
     }
 
     public static void initExcersise(EjerciciosInterface excersise) {
