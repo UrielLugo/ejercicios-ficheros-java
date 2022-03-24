@@ -14,4 +14,6 @@ public class Constants {
     
     public static final String NUMBERS_FILENAME = "numeros.txt";
     public static final String WRITE_NUMBERS_FILENAME = "numerosWrite.txt";
+
+    public static final String CANDIDATES_FILENAME = "candidates.bin";
 }
