@@ -45,7 +45,6 @@ public class Ejercicio10 implements EjerciciosInterface {
 
     @SuppressWarnings("unchecked")
     public <T> T getInput(String message, Class<? extends Number> type ) throws ClassCastException{
-        // TODO Unchecked cast <T>
         String title = "Recolección de información";
         String showInputDialog = JOptionPane.showInputDialog(null, message, title, JOptionPane.QUESTION_MESSAGE);
 

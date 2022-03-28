@@ -3,6 +3,7 @@ package ejercicios.ficheros.utils;
 public class Constants {
 
     public static final String RESOURCES_PATH = "app/src/main/resources/";
+    public static final String RESOURCES_TEMP_PATH = RESOURCES_PATH + "temp/";    
 
     public static final String HELLO_WORLD_FILENAME = "holaMundo.txt";
 
@@ -16,4 +17,6 @@ public class Constants {
     public static final String WRITE_NUMBERS_FILENAME = "numerosWrite.txt";
 
     public static final String CANDIDATES_FILENAME = "candidates.bin";
+
+    public static final String EXCEL_FILENAME = "datos.xlsx";
 }
