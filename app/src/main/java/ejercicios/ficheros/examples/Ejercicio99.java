@@ -26,11 +26,11 @@ public class Ejercicio99 implements EjerciciosInterface {
 
     @Override
     public void example() {
-        final String IMAGE_URL = "https://images.unsplash.com/photo-1417325384643-aac51acc9e5d?q=75&fm=jpg&w=1080&fit=max";
+        final String IMAGE_URL = "https://picsum.photos/1280/720";
         final String FILENAME = "randomImage.jpg";
         final String PATH = Constants.RESOURCES_TEMP_PATH;
 
-        download("https://picsum.photos/1280/720", FILENAME, PATH);
+        download(IMAGE_URL, FILENAME, PATH);
     }
 
     public static void download(String urlString, String filename, String savePath) {
