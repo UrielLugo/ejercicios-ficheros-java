@@ -29,7 +29,11 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'ejercicios.ficheros.EjerciciosFicherosApplication'
+    mainClassName = 'ejercicios.ficheros.EjerciciosFicherosApplication'
+}
+
+run {
+    standardInput = System.in
 }
 
 tasks.named('test') {
