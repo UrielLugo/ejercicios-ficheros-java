@@ -4,6 +4,7 @@ import ejercicios.ficheros.utils.Constants;
 import ejercicios.ficheros.utils.EjerciciosInterface;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -68,6 +69,8 @@ public class Ejercicio13 implements EjerciciosInterface {
                     case 5:
                         salir = true;
                         break;
+                    default:
+                        break;
                 }
             } catch(Exception e) {
                 System.err.println(e.getMessage());
@@ -93,13 +96,13 @@ public class Ejercicio13 implements EjerciciosInterface {
             throw new IOException("El archivo no existe, crear archivo primero");
         }
         System.out.println("Introduce un DNI: ");
-        String DNI = scanner.next();
+        String dni = scanner.next();
         System.out.println("Introduce el nombre");
         String nombre = scanner.next();
         System.out.println("Introduce el numero de telefono");
         String telefono = scanner.next();
 
-        Cliente cliente = new Cliente(DNI, nombre, telefono);
+        Cliente cliente = new Cliente(dni, nombre, telefono);
         writeObjects(file, cliente);
     }
 
@@ -132,25 +135,22 @@ public class Ejercicio13 implements EjerciciosInterface {
      * @param object
      */
     void writeObjects(File file, Object object) throws IOException {
-        ObjectOutputStream oos;
         if (file == null || object == null) {
             throw new NullPointerException("The params must be not null");
         }
-        if (file.length() == 0) { // Si fichero está vacío, ocupamos ObjectOutputStream que crea una cabecera del objeto
-            oos = new ObjectOutputStream(new FileOutputStream(file));
-        } else { // Si no es nuevo el fichero, creamos una clase anónima que ignore el crear más cabeceras
-            oos = new MiObjectInputStream(new FileOutputStream(file, true)); // Append true para no sobrescribir el archivo
+        try(ObjectOutputStream oos = (file.length() == 0)
+                ? new ObjectOutputStream(new FileOutputStream(file))
+                : new MiObjectInputStream(new FileOutputStream(file, true))) {
+            oos.writeObject(object);
         }
-        oos.writeObject(object);
-        oos.close();
     }
 
     void deleteFile(File file) throws IOException {
         if(!file.exists()) {
             throw new IOException("El archivo no existe");
         }
-        boolean delete = file.delete();
-        if(delete) {
+
+        if(Files.deleteIfExists(file.toPath())) {
             System.out.println("El fichero se ha borrado correctamente");
         }else {
             throw new IOException("El fichero no se ha podido borrar");
@@ -203,16 +203,16 @@ public class Ejercicio13 implements EjerciciosInterface {
                     '}';
         }
     }
-}
 
-class MiObjectInputStream extends ObjectOutputStream {
+    static class MiObjectInputStream extends ObjectOutputStream {
 
-    public MiObjectInputStream(OutputStream out) throws IOException {
-        super(out);
-    }
+        public MiObjectInputStream(OutputStream out) throws IOException {
+            super(out);
+        }
 
-    @Override
-    protected void writeStreamHeader() {
-        // Must do nothing
+        @Override
+        protected void writeStreamHeader() {
+            // Must do nothing
+        }
     }
 }
