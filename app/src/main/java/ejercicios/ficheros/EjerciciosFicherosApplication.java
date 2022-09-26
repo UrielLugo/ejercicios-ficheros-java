@@ -4,7 +4,10 @@
 package ejercicios.ficheros;
 
 import ejercicios.ficheros.utils.EjerciciosInterface;
+import ejercicios.ficheros.utils.FindClass;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -17,9 +20,25 @@ public class EjerciciosFicherosApplication {
     static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         
-        int excerciseNumber = 0;
-        System.out.println("Delimiter pattern: " + scanner.delimiter());
+        //System.out.println("Delimiter pattern: " + scanner.delimiter());
 
+        System.out.println("Ejercicios disponibles: ");
+        Class<?>[] classes = new Class[0];
+        try {
+            classes = FindClass.getClasses("ejercicios.ficheros.examples");
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+        String[] strings = Arrays.stream(classes).map(Class::getSimpleName).sorted().toArray(String[]::new);
+        for(int i=1; i<= strings.length; i++) {
+            if(i%5 == 0 || i==strings.length){
+                System.out.println();
+            }else {
+                System.out.print(strings[i-1] + " | ");
+            }
+        }
+
+        int excerciseNumber = 0;
         while(true) {
             System.out.print("Ingrese el numero del ejercicio: ");
 
@@ -64,8 +83,7 @@ public class EjerciciosFicherosApplication {
     public static EjerciciosInterface findClass(String className) {
         try {
             Class<?> exerciseClass = Class.forName(className);
-            EjerciciosInterface excercise = (EjerciciosInterface) exerciseClass.newInstance();
-            return excercise;
+            return (EjerciciosInterface) exerciseClass.newInstance();
         } catch (ClassNotFoundException e) {
             System.err.println("No se encontro la clase: " + className);
         } catch(InstantiationException e) {
