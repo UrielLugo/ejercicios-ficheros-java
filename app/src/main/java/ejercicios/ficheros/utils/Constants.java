@@ -2,7 +2,7 @@ package ejercicios.ficheros.utils;
 
 public class Constants {
 
-    public static final String RESOURCES_PATH = "app/src/main/resources/";
+    public static final String RESOURCES_PATH = "src/main/resources/";
     public static final String RESOURCES_TEMP_PATH = RESOURCES_PATH + "temp/";    
 
     public static final String HELLO_WORLD_FILENAME = "holaMundo.txt";
