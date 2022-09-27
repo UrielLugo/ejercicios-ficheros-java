@@ -6,7 +6,6 @@ import ejercicios.ficheros.utils.EjerciciosInterface;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,7 +30,7 @@ public class Ejercicio13 implements EjerciciosInterface {
     @Override
     public void example() {
         Scanner scanner = new Scanner(System.in);
-        scanner.useDelimiter("\n");
+        scanner.reset();
 
         boolean salir = false;
         int opcion;
@@ -46,12 +45,14 @@ public class Ejercicio13 implements EjerciciosInterface {
             System.out.println("5. Salir del programa");
 
             try {
-                System.out.println("Escribe una opción");
-                if (!scanner.hasNext()) {
-                    throw new InputMismatchException("Se ingreso un caracter no permitido");
-                } else {
+                System.out.println("Escribe una opción: ");
+                if(scanner.hasNextInt()) {
                     opcion = scanner.nextInt();
+                    scanner.nextLine();
+                }else {
+                    throw new NumberFormatException("Ingreso de una cadena invalida");
                 }
+
                 switch (opcion) {
                     case 1:
                         createFile(fichero);
@@ -70,6 +71,7 @@ public class Ejercicio13 implements EjerciciosInterface {
                         salir = true;
                         break;
                     default:
+                        System.err.println("Esta opción no existe: " + opcion + ". Ingresar una opción valida");
                         break;
                 }
             } catch(Exception e) {
