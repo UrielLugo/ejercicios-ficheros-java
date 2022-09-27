@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Ejercicio13 implements EjerciciosInterface {
+
+    private final Scanner scanner;
+    public Ejercicio13() {
+        scanner = new Scanner(System.in);
+    }
+
     @Override
     public String getNameExample() {
         return "13. Archivo binario con Serialización";
@@ -29,9 +35,6 @@ public class Ejercicio13 implements EjerciciosInterface {
 
     @Override
     public void example() {
-        Scanner scanner = new Scanner(System.in);
-        scanner.reset();
-
         boolean salir = false;
         int opcion;
 
@@ -50,6 +53,7 @@ public class Ejercicio13 implements EjerciciosInterface {
                     opcion = scanner.nextInt();
                     scanner.nextLine();
                 }else {
+                    scanner.nextLine();
                     throw new NumberFormatException("Ingreso de una cadena invalida");
                 }
 
@@ -58,7 +62,7 @@ public class Ejercicio13 implements EjerciciosInterface {
                         createFile(fichero);
                         break;
                     case 2:
-                        addClient(fichero, scanner);
+                        addClient(fichero);
                         break;
                     case 3:
                         List<Cliente> clientes = listClients(fichero);
@@ -93,7 +97,7 @@ public class Ejercicio13 implements EjerciciosInterface {
         }
     }
 
-    void addClient(File file, Scanner scanner) throws IOException {
+    void addClient(File file) throws IOException {
         if(!file.exists()) {
             throw new IOException("El archivo no existe, crear archivo primero");
         }
@@ -117,7 +121,7 @@ public class Ejercicio13 implements EjerciciosInterface {
         }
 
         List<Cliente> clientes = new ArrayList<>();
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+        try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(file.toPath()))) {
             while(true) {
                 Cliente cliente = (Cliente) ois.readObject();
                 clientes.add(cliente);
@@ -141,7 +145,7 @@ public class Ejercicio13 implements EjerciciosInterface {
             throw new NullPointerException("The params must be not null");
         }
         try(ObjectOutputStream oos = (file.length() == 0)
-                ? new ObjectOutputStream(new FileOutputStream(file))
+                ? new ObjectOutputStream(Files.newOutputStream(file.toPath()))
                 : new MiObjectInputStream(new FileOutputStream(file, true))) {
             oos.writeObject(object);
         }
